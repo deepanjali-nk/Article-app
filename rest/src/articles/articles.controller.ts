@@ -31,4 +31,9 @@ export class ArticlesController {
   remove(@Param('id') id: string) {
     return this.articlesService.remove(+id);
   }
+
+  @Get('drafts')
+  findDrafts() {
+    return this.articlesService.findDrafts();
+  }
 }
