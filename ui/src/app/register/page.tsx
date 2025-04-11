@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
-    name: '', // Changed from username to name
+    name: '',
     email: '',
     password: '',
   });
@@ -44,7 +44,7 @@ const RegisterPage = () => {
             <input
               type="text"
               id="name"
-              name="name" // Changed from username to name
+              name="name" 
               value={formData.name}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700"

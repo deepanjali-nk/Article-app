@@ -24,11 +24,18 @@ export class UsersService {
   }
 
   findAll() {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      select: {
+        name: true,
+      },
+    });
   }
 
   findOne(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({ where: { id },
+    select: {
+      name: true,
+    }});
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {

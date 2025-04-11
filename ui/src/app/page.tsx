@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -19,9 +20,20 @@ export default function Home() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    // console.log('Form submitted:', formData);
+    try{
+      const response = await axios.post('http://localhost:3002/auth/login', formData);
+      const { accessToken } = response.data;
+      localStorage.setItem('accessToken', accessToken);
+      console.log('Login successful:', response.data);
+      router.push('/dashboard');
+    }
+    catch (error) {
+      console.error('Login failed:', error);
+
+    }
 
   };
 

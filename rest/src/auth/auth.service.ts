@@ -14,7 +14,7 @@ import {
 
     async login(email:string, password:string): Promise<AuthEntity>{
         //fetch users
-        const user = await this.Prisma.user.findUnique({where: {email:email}})
+        const user = await this.Prisma.user.findUnique({where: {email:email.toLowerCase()}});
 
         //check if user exists
         if(!user){
@@ -29,7 +29,7 @@ import {
 
         //generate JWT token
         return {
-            accessToken: this.jwtService.sign({userId: user.id}),
+            accessToken: this.jwtService.sign({userId: user.id, name: user.name}),
         };
     }
   }
