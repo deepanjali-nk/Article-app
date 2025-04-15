@@ -7,14 +7,19 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class ArticlesService {
   constructor (private prisma: PrismaService) {}
-  create(createArticleDto: CreateArticleDto) {
+  create(createArticleDto: CreateArticleDto, userId: number) {
+    console.log('create called', createArticleDto);
+    console.log('userId', userId);
     return this.prisma.article.create({
-      data: createArticleDto});
+      data: {
+        ...createArticleDto,
+        authorId: userId,
+      }
+  });
   }
 
   findAll() {
-    console.log('findAll called', this.prisma);
-    return this.prisma.article.findMany({ where: { published: true } });
+    return this.prisma.article.findMany();
   }
 
   findOne(id: number) {
@@ -30,6 +35,10 @@ export class ArticlesService {
 
   update(id: number, updateArticleDto: UpdateArticleDto) {
     // console.log('update called', id, updateArticleDto);
+    const result= this.prisma.article.findUnique({
+      where: { id }, 
+    });
+
     return this.prisma.article.update({
       where: { id },
       data: updateArticleDto,

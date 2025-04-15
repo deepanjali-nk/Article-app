@@ -7,12 +7,16 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ArticleEntity } from './entities/article.entity';
+import { Request } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+
 
 @Controller('articles')
 @ApiTags('articles')
@@ -20,10 +24,13 @@ export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ type: ArticleEntity })
-  async create(@Body() createArticleDto: CreateArticleDto) {
+  async create(@Body() createArticleDto: CreateArticleDto, @Request() req: any) {
+    console.log('Request user:', req.userId);
+    const userId = req.user.userId;
     return new ArticleEntity(
-      await this.articlesService.create(createArticleDto),
+      await this.articlesService.create(createArticleDto, userId),
     );
   }
 
